@@ -75,7 +75,7 @@ trait RequestWriter
             $message .= $name.': '.implode(', ', $values)."\r\n";
         }
 
-        return $message . "\r\n";
+        return $message."\r\n";
     }
 
     /**
@@ -89,7 +89,7 @@ trait RequestWriter
      */
     private function fwrite($stream, string $bytes): bool|int
     {
-        if ($bytes === '') {
+        if ('' === $bytes) {
             return 0;
         }
         $result = @fwrite($stream, $bytes);
@@ -107,7 +107,7 @@ trait RequestWriter
         $write = [$stream];
         $except = [];
         @stream_select($read, $write, $except, 0);
-        if ($write === []) {
+        if ([] === $write) {
             // The stream isn't writable, so we conclude that it probably really is
             // blocked and the underlying error was EAGAIN. Return 0 to indicate that
             // no data could be written yet.

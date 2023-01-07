@@ -48,8 +48,7 @@ class Stream implements StreamInterface, \Stringable
         private RequestInterface $request,
         private $socket,
         private ?int $size = null
-    )
-    {
+    ) {
     }
 
     /**

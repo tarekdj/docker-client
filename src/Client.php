@@ -50,9 +50,9 @@ class Client implements ClientInterface
      * int                  write_buffer_size      Buffer when writing the request body, defaults to 8192
      * int                  ssl_method             Crypto method for ssl/tls, see PHP doc, defaults to STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT
      */
-    public function __construct(array $config1 = [])
+    public function __construct(array $config = [])
     {
-        $this->config = $this->configure($config1);
+        $this->config = $this->configure($config);
     }
 
     /**
@@ -93,7 +93,7 @@ class Client implements ClientInterface
         return $this->decodeResponse($response);
     }
 
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -123,7 +123,7 @@ class Client implements ClientInterface
                 $response = $response->withBody($stream);
             }
 
-            if ($newEncodings !== []) {
+            if ([] !== $newEncodings) {
                 $response = $response->withHeader($headerName, $newEncodings);
             } else {
                 $response = $response->withoutHeader($headerName);
@@ -257,7 +257,7 @@ class Client implements ClientInterface
             'write_buffer_size' => 8192,
             'ssl_method' => STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT,
         ]);
-        $resolver->setDefault('stream_context', fn(Options $options) => stream_context_create($options['stream_context_options'], $options['stream_context_param']));
+        $resolver->setDefault('stream_context', fn (Options $options) => stream_context_create($options['stream_context_options'], $options['stream_context_param']));
         $resolver->setDefault('timeout', ((int) ini_get('default_socket_timeout')) * 1000);
 
         $resolver->setAllowedTypes('stream_context_options', 'array');
@@ -270,7 +270,6 @@ class Client implements ClientInterface
 
     /**
      * Return remote socket from the request.
-     *
      *
      * @throws InvalidRequestException When no remote can be determined from the request
      */
