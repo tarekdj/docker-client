@@ -3,9 +3,6 @@
 namespace Tarekdj\DockerClient;
 
 use Http\Message\Encoding\ChunkStream;
-use Http\Message\Encoding\DechunkStream;
-use Http\Message\Encoding\DecompressStream;
-use Http\Message\Encoding\GzipDecodeStream;
 use Nyholm\Psr7\Uri;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
@@ -14,6 +11,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tarekdj\DockerClient\Encoding\DechunkStream;
+use Tarekdj\DockerClient\Encoding\DecompressStream;
+use Tarekdj\DockerClient\Encoding\GzipDecodeStream;
 use Tarekdj\DockerClient\Exception\ConnectionException;
 use Tarekdj\DockerClient\Exception\InvalidRequestException;
 use Tarekdj\DockerClient\Exception\SSLConnectionException;
@@ -245,7 +245,7 @@ class Client implements ClientInterface
      *
      * @return array{remote_socket: string|null, timeout: int, stream_context: resource, stream_context_options: array<string, mixed>, stream_context_param: array<string, mixed>, ssl: ?boolean, write_buffer_size: int, ssl_method: int}
      */
-    protected function configure(array $config = [])
+    protected function configure(array $config = []): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
