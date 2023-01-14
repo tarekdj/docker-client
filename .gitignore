@@ -8,3 +8,5 @@
 /tests/server/ssl/*.key
 /tests/server/ssl/*.req
 /vendor/
+/.phpunit.result.cache
+/.idea

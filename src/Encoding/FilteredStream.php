@@ -11,13 +11,13 @@ use Tarekdj\DockerClient\StreamDecorator;
  *
  * @author Joel Wurtz <joel.wurtz@gmail.com>
  */
-abstract class FilteredStream implements StreamInterface
+abstract class FilteredStream implements StreamInterface, \Stringable
 {
     use StreamDecorator {
         rewind as private doRewind;
         seek as private doSeek;
     }
-    const BUFFER_SIZE = 8192;
+    public const BUFFER_SIZE = 8192;
 
     /**
      * @var callable
@@ -157,7 +157,7 @@ abstract class FilteredStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getContents();
     }
@@ -199,7 +199,7 @@ abstract class FilteredStream implements StreamInterface
      */
     public function getReadFilter()
     {
-        @trigger_error('The '.__CLASS__.'::'.__METHOD__.' method is deprecated since version 1.5 and will be removed in 2.0.', E_USER_DEPRECATED);
+        @trigger_error('The '.self::class.'::'.__METHOD__.' method is deprecated since version 1.5 and will be removed in 2.0.', E_USER_DEPRECATED);
 
         return $this->readFilter();
     }
@@ -220,7 +220,7 @@ abstract class FilteredStream implements StreamInterface
      */
     public function getWriteFilter()
     {
-        @trigger_error('The '.__CLASS__.'::'.__METHOD__.' method is deprecated since version 1.5 and will be removed in 2.0.', E_USER_DEPRECATED);
+        @trigger_error('The '.self::class.'::'.__METHOD__.' method is deprecated since version 1.5 and will be removed in 2.0.', E_USER_DEPRECATED);
 
         return $this->writeFilter();
     }

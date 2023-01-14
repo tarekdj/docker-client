@@ -12,7 +12,7 @@ class ChunkStream extends FilteredStream
     /**
      * {@inheritdoc}
      */
-    protected function readFilter()
+    protected function readFilter(): string
     {
         return 'chunk';
     }
@@ -20,7 +20,7 @@ class ChunkStream extends FilteredStream
     /**
      * {@inheritdoc}
      */
-    protected function writeFilter()
+    protected function writeFilter(): string
     {
         return 'dechunk';
     }
