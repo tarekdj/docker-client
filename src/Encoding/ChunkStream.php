@@ -28,7 +28,7 @@ class ChunkStream extends FilteredStream
     /**
      * {@inheritdoc}
      */
-    protected function fill()
+    protected function fill(): void
     {
         parent::fill();
 

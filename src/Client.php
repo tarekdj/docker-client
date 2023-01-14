@@ -39,7 +39,7 @@ class Client implements ClientInterface
     /**
      * Constructor.
      *
-     * @param array{remote_socket?: string|null, timeout?: int, stream_context?: resource, stream_context_options?: array<string, mixed>, stream_context_param?: array<string, mixed>, ssl?: ?boolean, write_buffer_size?: int, ssl_method?: int}|ResponseFactoryInterface $config1
+     * @param array{remote_socket?: string|null, timeout?: int, stream_context?: resource, stream_context_options?: array<string, mixed>, stream_context_param?: array<string, mixed>, ssl?: ?boolean, write_buffer_size?: int, ssl_method?: int}|ResponseFactoryInterface $config
      *
      * string|null          remote_socket          Remote entrypoint (can be a tcp or unix domain address)
      * int                  timeout                Timeout before canceling request
@@ -50,6 +50,7 @@ class Client implements ClientInterface
      * int                  write_buffer_size      Buffer when writing the request body, defaults to 8192
      * int                  ssl_method             Crypto method for ssl/tls, see PHP doc, defaults to STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT
      */
+    /* @phpstan-ignore-next-line */
     public function __construct(array $config = [])
     {
         $this->config = $this->configure($config);
@@ -93,6 +94,7 @@ class Client implements ClientInterface
         return $this->decodeResponse($response);
     }
 
+    /* @phpstan-ignore-next-line */
     public function getConfig(): array
     {
         return $this->config;
@@ -133,7 +135,7 @@ class Client implements ClientInterface
         return $response;
     }
 
-    private function decorateStream(string $encoding, StreamInterface $stream)
+    private function decorateStream(string $encoding, StreamInterface $stream): bool|StreamInterface
     {
         if ('chunked' === strtolower($encoding)) {
             return new DechunkStream($stream);
