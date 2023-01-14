@@ -2,14 +2,7 @@
 
 namespace Tarekdj\DockerClient;
 
-use Tarekdj\DockerClient\Exception\ConnectionException;
-use Tarekdj\DockerClient\Exception\InvalidRequestException;
-use Tarekdj\DockerClient\Exception\SSLConnectionException;
-use Tarekdj\DockerClient\Exception\TimeoutException;
 use Http\Message\Encoding\ChunkStream;
-use Http\Message\Encoding\DechunkStream;
-use Http\Message\Encoding\DecompressStream;
-use Http\Message\Encoding\GzipDecodeStream;
 use Nyholm\Psr7\Uri;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
@@ -18,6 +11,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tarekdj\DockerClient\Encoding\DechunkStream;
+use Tarekdj\DockerClient\Encoding\DecompressStream;
+use Tarekdj\DockerClient\Encoding\GzipDecodeStream;
+use Tarekdj\DockerClient\Exception\ConnectionException;
+use Tarekdj\DockerClient\Exception\InvalidRequestException;
+use Tarekdj\DockerClient\Exception\SSLConnectionException;
+use Tarekdj\DockerClient\Exception\TimeoutException;
 
 /**
  * Socket Http Client.
@@ -34,12 +34,12 @@ class Client implements ClientInterface
     /**
      * @var array{remote_socket: string|null, timeout: int, stream_context: resource, stream_context_options: array<string, mixed>, stream_context_param: array<string, mixed>, ssl: ?boolean, write_buffer_size: int, ssl_method: int}
      */
-    private $config;
+    private array $config;
 
     /**
      * Constructor.
      *
-     * @param array{remote_socket?: string|null, timeout?: int, stream_context?: resource, stream_context_options?: array<string, mixed>, stream_context_param?: array<string, mixed>, ssl?: ?boolean, write_buffer_size?: int, ssl_method?: int}|ResponseFactoryInterface $config1
+     * @param array{remote_socket?: string|null, timeout?: int, stream_context?: resource, stream_context_options?: array<string, mixed>, stream_context_param?: array<string, mixed>, ssl?: ?boolean, write_buffer_size?: int, ssl_method?: int}|ResponseFactoryInterface $config
      *
      * string|null          remote_socket          Remote entrypoint (can be a tcp or unix domain address)
      * int                  timeout                Timeout before canceling request
@@ -50,9 +50,10 @@ class Client implements ClientInterface
      * int                  write_buffer_size      Buffer when writing the request body, defaults to 8192
      * int                  ssl_method             Crypto method for ssl/tls, see PHP doc, defaults to STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT
      */
-    public function __construct(array $config1 = [])
+    /* @phpstan-ignore-next-line */
+    public function __construct(array $config = [])
     {
-        $this->config = $this->configure($config1);
+        $this->config = $this->configure($config);
     }
 
     /**
@@ -93,9 +94,16 @@ class Client implements ClientInterface
         return $this->decodeResponse($response);
     }
 
+    /* @phpstan-ignore-next-line */
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
+
     protected function decodeResponse(ResponseInterface $response): ResponseInterface
     {
         $response = $this->decodeOnEncodingHeader('Transfer-Encoding', $response);
+
         return $this->decodeOnEncodingHeader('Content-Encoding', $response);
     }
 
@@ -117,7 +125,7 @@ class Client implements ClientInterface
                 $response = $response->withBody($stream);
             }
 
-            if (\count($newEncodings) > 0) {
+            if ([] !== $newEncodings) {
                 $response = $response->withHeader($headerName, $newEncodings);
             } else {
                 $response = $response->withoutHeader($headerName);
@@ -127,7 +135,7 @@ class Client implements ClientInterface
         return $response;
     }
 
-    private function decorateStream(string $encoding, StreamInterface $stream)
+    private function decorateStream(string $encoding, StreamInterface $stream): bool|StreamInterface
     {
         if ('chunked' === strtolower($encoding)) {
             return new DechunkStream($stream);
@@ -182,6 +190,7 @@ class Client implements ClientInterface
         $request = $request->withHeader('Accept-Encoding', $encodings);
 
         $encodings[] = 'chunked';
+
         return $request->withHeader('TE', $encodings);
     }
 
@@ -192,9 +201,9 @@ class Client implements ClientInterface
      * @param string           $remote  Entrypoint for the connection
      * @param bool             $useSsl  Whether to use ssl or not
      *
-     * @throws ConnectionException|SSLConnectionException When the connection fail
-     *
      * @return resource Socket resource
+     *
+     * @throws ConnectionException|SSLConnectionException When the connection fail
      */
     protected function createSocket(RequestInterface $request, string $remote, bool $useSsl)
     {
@@ -238,7 +247,7 @@ class Client implements ClientInterface
      *
      * @return array{remote_socket: string|null, timeout: int, stream_context: resource, stream_context_options: array<string, mixed>, stream_context_param: array<string, mixed>, ssl: ?boolean, write_buffer_size: int, ssl_method: int}
      */
-    protected function configure(array $config = [])
+    protected function configure(array $config = []): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -250,9 +259,7 @@ class Client implements ClientInterface
             'write_buffer_size' => 8192,
             'ssl_method' => STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT,
         ]);
-        $resolver->setDefault('stream_context', function (Options $options) {
-            return stream_context_create($options['stream_context_options'], $options['stream_context_param']);
-        });
+        $resolver->setDefault('stream_context', fn (Options $options) => stream_context_create($options['stream_context_options'], $options['stream_context_param']));
         $resolver->setDefault('timeout', ((int) ini_get('default_socket_timeout')) * 1000);
 
         $resolver->setAllowedTypes('stream_context_options', 'array');
@@ -267,10 +274,8 @@ class Client implements ClientInterface
      * Return remote socket from the request.
      *
      * @throws InvalidRequestException When no remote can be determined from the request
-     *
-     * @return string
      */
-    private function determineRemoteFromRequest(RequestInterface $request)
+    private function determineRemoteFromRequest(RequestInterface $request): string
     {
         if (!$request->hasHeader('Host') && '' === $request->getUri()->getHost()) {
             throw new InvalidRequestException('Remote is not defined and we cannot determine a connection endpoint for this request (no Host header)', $request);
