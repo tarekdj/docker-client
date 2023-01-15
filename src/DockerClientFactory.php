@@ -2,6 +2,14 @@
 
 namespace Tarekdj\DockerClient;
 
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Symfony\Component\Serializer\Encoder\JsonDecode;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Tarekdj\Docker\ApiClient\Normalizer\JaneObjectNormalizer;
+
 class DockerClientFactory
 {
     public static function create(?string $dockerHost = null, ?bool $ssl = false, ?string $certPath = null): ApiClient
@@ -22,8 +30,28 @@ class DockerClientFactory
             ];
         }
 
-        $socketClient = new Client($options);
+        $normalizers = [
+            new ArrayDenormalizer(),
+            new JaneObjectNormalizer(),
+        ];
 
-        return ApiClient::create($socketClient);
+        $serializer = new Serializer(
+            $normalizers,
+            [
+                new JsonEncoder(
+                    new JsonEncode(),
+                    new JsonDecode(['json_decode_associative' => true])
+                ),
+            ]
+        );
+
+        $requestFactory = $streamFactory = new Psr17Factory();
+
+        return new ApiClient(
+            new Client($options),
+            $requestFactory,
+            $serializer,
+            $streamFactory
+        );
     }
 }
