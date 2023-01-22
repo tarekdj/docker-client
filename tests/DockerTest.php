@@ -5,6 +5,7 @@ namespace Tarekdj\DockerClient\Tests;
 use PHPUnit\Framework\TestCase;
 use Tarekdj\Docker\ApiClient\Model\SystemInfo;
 use Tarekdj\Docker\ApiClient\Model\SystemVersion;
+use Tarekdj\DockerClient\ApiClient;
 use Tarekdj\DockerClient\DockerClientFactory;
 
 class DockerTest extends TestCase
@@ -12,6 +13,7 @@ class DockerTest extends TestCase
     public function testDockerClient(): void
     {
         $dockerClient = DockerClientFactory::create();
+        $this->assertInstanceOf(ApiClient::class, $dockerClient);
         $info = $dockerClient->systemInfo();
         $this->assertInstanceOf(SystemInfo::class, $info);
         $this->assertNotNull($info->getID());
