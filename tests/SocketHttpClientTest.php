@@ -4,9 +4,9 @@ namespace Tarekdj\DockerClient\Tests;
 
 use Http\Client\Common\HttpMethodsClient;
 use Http\Message\MessageFactory\GuzzleMessageFactory;
-use Tarekdj\DockerClient\Client as SocketHttpClient;
 use Tarekdj\DockerClient\Exception\NetworkException;
 use Tarekdj\DockerClient\Exception\TimeoutException;
+use Tarekdj\DockerClient\Http\Client as SocketHttpClient;
 
 class SocketHttpClientTest extends BaseTestCase
 {

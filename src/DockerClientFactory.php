@@ -9,6 +9,8 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Tarekdj\Docker\ApiClient\Normalizer\JaneObjectNormalizer;
+use Tarekdj\DockerClient\Docker\ApiClient;
+use Tarekdj\DockerClient\Http\Client;
 
 class DockerClientFactory
 {

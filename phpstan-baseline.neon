@@ -1,31 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method Tarekdj\\\\DockerClient\\\\Client\\:\\:__construct\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Client.php
-
-		-
-			message: "#^Method Tarekdj\\\\DockerClient\\\\Client\\:\\:configure\\(\\) should return array\\{remote_socket\\: string\\|null, timeout\\: int, stream_context\\: resource, stream_context_options\\: array\\<string, mixed\\>, stream_context_param\\: array\\<string, mixed\\>, ssl\\: bool\\|null, write_buffer_size\\: int, ssl_method\\: int\\} but returns array\\.$#"
-			count: 1
-			path: src/Client.php
-
-		-
-			message: "#^PHPDoc tag @param for parameter \\$config with type array\\<string, array\\<string, mixed\\>\\|bool\\|int\\|resource\\|string\\|null\\>\\|Psr\\\\Http\\\\Message\\\\ResponseFactoryInterface is not subtype of native type array\\.$#"
-			count: 1
-			path: src/Client.php
-
-		-
-			message: "#^Parameter \\#1 \\$body of method Psr\\\\Http\\\\Message\\\\MessageInterface\\:\\:withBody\\(\\) expects Psr\\\\Http\\\\Message\\\\StreamInterface, Psr\\\\Http\\\\Message\\\\StreamInterface\\|true given\\.$#"
-			count: 1
-			path: src/Client.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between array\\{\\} and array\\{resource\\} will always evaluate to false\\.$#"
-			count: 1
-			path: src/Client.php
-
-		-
 			message: "#^Method Tarekdj\\\\DockerClient\\\\Encoding\\\\FilteredStream\\:\\:fill\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Encoding/FilteredStream.php
@@ -41,6 +16,31 @@ parameters:
 			path: src/Encoding/FilteredStream.php
 
 		-
-			message: "#^Property Tarekdj\\\\DockerClient\\\\Stream\\:\\:\\$socket \\(resource\\) does not accept null\\.$#"
+			message: "#^Method Tarekdj\\\\DockerClient\\\\Http\\\\Client\\:\\:__construct\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
-			path: src/Stream.php
+			path: src/Http/Client.php
+
+		-
+			message: "#^Method Tarekdj\\\\DockerClient\\\\Http\\\\Client\\:\\:configure\\(\\) should return array\\{remote_socket\\: string\\|null, timeout\\: int, stream_context\\: resource, stream_context_options\\: array\\<string, mixed\\>, stream_context_param\\: array\\<string, mixed\\>, ssl\\: bool\\|null, write_buffer_size\\: int, ssl_method\\: int\\} but returns array\\.$#"
+			count: 1
+			path: src/Http/Client.php
+
+		-
+			message: "#^PHPDoc tag @param for parameter \\$config with type array\\<string, array\\<string, mixed\\>\\|bool\\|int\\|resource\\|string\\|null\\>\\|Psr\\\\Http\\\\Message\\\\ResponseFactoryInterface is not subtype of native type array\\.$#"
+			count: 1
+			path: src/Http/Client.php
+
+		-
+			message: "#^Parameter \\#1 \\$body of method Psr\\\\Http\\\\Message\\\\MessageInterface\\:\\:withBody\\(\\) expects Psr\\\\Http\\\\Message\\\\StreamInterface, Psr\\\\Http\\\\Message\\\\StreamInterface\\|true given\\.$#"
+			count: 1
+			path: src/Http/Client.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between array\\{\\} and array\\{resource\\} will always evaluate to false\\.$#"
+			count: 1
+			path: src/Http/Client.php
+
+		-
+			message: "#^Property Tarekdj\\\\DockerClient\\\\Http\\\\Stream\\:\\:\\$socket \\(resource\\) does not accept null\\.$#"
+			count: 1
+			path: src/Http/Stream.php

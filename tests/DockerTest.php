@@ -5,7 +5,7 @@ namespace Tarekdj\DockerClient\Tests;
 use PHPUnit\Framework\TestCase;
 use Tarekdj\Docker\ApiClient\Model\SystemInfo;
 use Tarekdj\Docker\ApiClient\Model\SystemVersion;
-use Tarekdj\DockerClient\ApiClient;
+use Tarekdj\DockerClient\Docker\ApiClient;
 use Tarekdj\DockerClient\DockerClientFactory;
 
 class DockerTest extends TestCase

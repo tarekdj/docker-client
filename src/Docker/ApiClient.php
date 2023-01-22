@@ -1,10 +1,11 @@
 <?php
 
-namespace Tarekdj\DockerClient;
+namespace Tarekdj\DockerClient\Docker;
 
 use Nyholm\Psr7\Uri;
 use Tarekdj\Docker\ApiClient\Client as DockerApiClient;
 use Tarekdj\DockerClient\Exception\InvalidClientException;
+use Tarekdj\DockerClient\Http\Client;
 
 class ApiClient extends DockerApiClient
 {

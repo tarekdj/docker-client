@@ -4,7 +4,7 @@ namespace Tarekdj\DockerClient\Encoding;
 
 use Clue\StreamFilter as Filter;
 use Psr\Http\Message\StreamInterface;
-use Tarekdj\DockerClient\StreamDecorator;
+use Tarekdj\DockerClient\Http\StreamDecorator;
 
 /**
  * A filtered stream has a filter for filtering output and a filter for filtering input made to a underlying stream.
