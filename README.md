@@ -4,8 +4,8 @@ The Docker client use the stream extension from PHP, which is integrated into th
 
 ## About this package
 
-This package forked from [php-http/socket-client](https://github.com/php-http/socket-client). The goal of this project
-is to provide a Docker client for PHP and is limited to it.
+This package is a fork from [php-http/socket-client](https://github.com/php-http/socket-client). The goal of this project
+is to provide a Docker client for PHP.
 
 If you need a socket client, please use [php-http/socket-client](https://github.com/php-http/socket-client)!
 
