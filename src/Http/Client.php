@@ -1,6 +1,6 @@
 <?php
 
-namespace Tarekdj\DockerClient;
+namespace Tarekdj\DockerClient\Http;
 
 use Http\Message\Encoding\ChunkStream;
 use Nyholm\Psr7\Uri;
