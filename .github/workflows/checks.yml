@@ -25,6 +25,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Change Owner of Container Working Directory
+        run: chown root:root .
 
       - name: Roave BC Check
         uses: docker://nyholm/roave-bc-check-ga
